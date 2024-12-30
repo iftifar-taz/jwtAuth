@@ -1,0 +1,35 @@
+<div class="md:mx-90 my-40 rounded-md p-3">
+    <h1 class="text-2xl font-semibold"></h1>
+    <hr class="my-3">
+    <div class="flex w-full my-3">
+        <div class="w-1/2">
+            <app-role-form [role]="role" [errorMessage]="errorMessage" (addRole)="createRole($event)"></app-role-form>
+            <div class="p-5 my-3">
+                <h1 class="font-medium">Assign role to user</h1>
+                <div class="flex gap-5">
+                    <mat-form-field class="mt-3">
+                        <mat-label>User</mat-label>
+                        <mat-select [(value)]="selectedUserId">
+                            @for (user of users$ | async; track user.id) {
+                                <mat-option value="{{user.id}}">{{user.fullName}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="mt-3">
+                        <mat-label>Role</mat-label>
+                        <mat-select [(value)]="selectedRoleId">
+                            @for (role of roles$ | async; track role.id) {
+                                <mat-option value="{{role.id}}">{{role.name}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <button class="bg-purple-600 disabled:bg-blue-300 text-white rounded-md px-4 py-2"
+                    [disabled]="!selectedUserId || !selectedRoleId" (click)="assignRole()">Assign</button>
+            </div>
+        </div>
+        <div class="w-full">
+            <app-role-list [roles]="roles$ | async" (deleteRole)="deleteRole($event)"></app-role-list>
+        </div>
+    </div>
+</div>
